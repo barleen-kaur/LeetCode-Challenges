@@ -1,13 +1,13 @@
 '''
-Q. Lowest Common Ancestor of a Binary Search Tree
-Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+Q.  Lowest Common Ancestor of a Binary Tree
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
 
 According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+Output: 3
+Explanation: The LCA of nodes 5 and 1 is 3.
 '''
-
-
-
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, x):
@@ -17,14 +17,19 @@ According to the definition of LCA on Wikipedia: “The lowest common ancestor i
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if root == None or root == p or root == q:
+        if root == None or p == None or q == None:
+            return None
+        elif root == p or root == q:
             return root
-        
-        if (p.val < root.val and q.val > root.val) or (q.val < root.val and p.val > root.val):
-            return root
-        
-        elif p.val <= root.val and q.val <= root.val:
-            return self.lowestCommonAncestor(root.left, p, q)
-        
-        elif p.val >= root.val and q.val >= root.val:
-            return self.lowestCommonAncestor(root.right, p, q)
+
+        else:
+            left =  self.lowestCommonAncestor(root.left, p, q)
+            right = self.lowestCommonAncestor(root.right, p, q)
+            if left == right:
+                return left
+            elif not left and right:
+                return right
+            elif left and not right:
+                return left
+            else:
+                return root
