@@ -13,7 +13,7 @@ Explanation: The route of [1,3,5,3,5] has a maximum absolute difference of 2 in 
 This is better than the route of [1,2,2,2,5], where the maximum absolute difference is 3.
 '''
 
-
+#This below code fails at some test cases when submitting the code whereas it passes at those test cases when running on them explicitly. This is strange! :o
 
 class Solution:
     
@@ -70,6 +70,37 @@ class Solution:
         cost = self.dijsktra()
 
         return cost[-1]
+
+
+
+'''
+# Neat Solution by Leetcode 
+
+class Solution:
+        
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        
+        rows = len(heights)
+        cols = len(heights[0])
+        effortMatrix = [[float('inf')]*cols for i in range(rows)]
+        effortMatrix[0][0] = 0
+        visited = [[False]*cols for i in range(rows)]
+        queue = [(0, 0, 0)]
+        
+        while queue:
+    
+            effort, x, y = heapq.heappop(queue)
+            visited[x][y] = True
+            for dx, dy in [[0,1],[0,-1],[1,0],[-1,0]]:
+                next_x, next_y = x + dx, y + dy
+                if 0 <= next_x < rows and 0 <= next_y < cols and not visited[next_x][next_y]:
+                    effort = abs(heights[x][y] - heights[next_x][next_y])
+                    max_effort = max(effortMatrix[x][y], effort)
+                    if effortMatrix[next_x][next_y] > max_effort:
+                        effortMatrix[next_x][next_y] = max_effort
+                        heapq.heappush(queue, (max_effort, next_x, next_y))
+
+        return effortMatrix[-1][-1]
         
         
         
